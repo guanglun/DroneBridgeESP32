@@ -41,6 +41,7 @@
 #include "db_esp_now.h"
 #include "iot_button.h"
 #include "db_serial.h"
+#include "db_led.h"
 #include "globals.h"
 
 #define NVS_NAMESPACE "settings"
@@ -74,8 +75,8 @@
 #define DB_DEFAULT_UART_BAUD_RATE 115200
 #elif CONFIG_DB_GENERIC_BOARD
 // initially set pins to 0 to allow the start of the system on all boards. User has to set the correct pins
-#define DB_DEFAULT_UART_TX_PIN GPIO_NUM_0
-#define DB_DEFAULT_UART_RX_PIN GPIO_NUM_0
+#define DB_DEFAULT_UART_TX_PIN GPIO_NUM_17
+#define DB_DEFAULT_UART_RX_PIN GPIO_NUM_18
 #define DB_DEFAULT_UART_RTS_PIN GPIO_NUM_0
 #define DB_DEFAULT_UART_CTS_PIN GPIO_NUM_0
 #define DB_DEFAULT_UART_BAUD_RATE 57600
@@ -778,6 +779,9 @@ void db_configure_antenna() {
  * Main entry point.
  */
 void app_main() {
+
+    db_start_led_module();
+
     udp_conn_list = udp_client_list_create();   // http server functions and db_read_settings_nvs expect the list to exist
     esp_err_t ret = nvs_flash_init();
     if (ret == ESP_ERR_NVS_NO_FREE_PAGES) {
