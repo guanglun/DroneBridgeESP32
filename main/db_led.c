@@ -143,7 +143,7 @@ void process_status(void *arg) {
         serial_total_byte_count_last = serial_total_byte_count;
         tcp_total_byte_count_last = tcp_total_byte_count;
         udp_total_byte_count_last = udp_total_byte_count;
-        vTaskDelay(pdMS_TO_TICKS(1000));
+        vTaskDelay(pdMS_TO_TICKS(2000));
     }
 }
 
