@@ -780,9 +780,10 @@ void db_configure_antenna() {
  */
 void app_main() {
 
+    udp_conn_list = udp_client_list_create();   // http server functions and db_read_settings_nvs expect the list to exist
+
     db_start_led_module();
 
-    udp_conn_list = udp_client_list_create();   // http server functions and db_read_settings_nvs expect the list to exist
     esp_err_t ret = nvs_flash_init();
     if (ret == ESP_ERR_NVS_NO_FREE_PAGES) {
         ESP_ERROR_CHECK(nvs_flash_erase());

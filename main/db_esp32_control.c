@@ -46,7 +46,8 @@
 uint16_t app_port_proxy = APP_PORT_PROXY;
 
 int8_t num_connected_tcp_clients = 0;
-
+uint32_t tcp_total_byte_count = 0;
+uint32_t udp_total_byte_count = 0;
 /**
  * Opens non-blocking UDP socket used for WiFi to UART communication. Does also accept broadcast packets just in case.
  * @return returns socket file descriptor
@@ -624,6 +625,7 @@ _Noreturn void control_module_udp_tcp() {
             if (tcp_clients[i] > 0) {
                 ssize_t recv_length = recv(tcp_clients[i], tcp_client_buffer, TCP_BUFF_SIZ, 0);
                 if (recv_length > 0) {
+                    tcp_total_byte_count += recv_length;
                     if (DB_SERIAL_PROTOCOL == DB_SERIAL_PROTOCOL_MAVLINK) {
                         // Parse, so we can listen in and react to certain messages - function will send parsed messages to serial link.
                         // We can not write to serial first since we might inject packets and do not know when to do so to not "destroy" an existign packet
@@ -651,6 +653,7 @@ _Noreturn void control_module_udp_tcp() {
         ssize_t recv_length = recvfrom(udp_conn_list->udp_socket, udp_buffer, UDP_BUF_SIZE, 0,
                                        (struct sockaddr *) &new_db_udp_client.udp_client, &udp_socklen);
         if (recv_length > 0) {
+            udp_total_byte_count += recv_length;
             if (DB_SERIAL_PROTOCOL == DB_SERIAL_PROTOCOL_MAVLINK) {
                 // Parse, so we can listen in and react to certain messages - function will send parsed messages to serial link.
                 // We can not write to serial first since we might inject packets and do not know when to do so to not "destroy" an existign packet
