@@ -55,7 +55,7 @@ void process_led(void *arg) {
         led_set(0);
         vTaskDelay(pdMS_TO_TICKS(1000));
 
-        led_set(LEDC_DUTY_MAX*1/6);
+        led_set(LEDC_DUTY_MAX*1/1);
         vTaskDelay(pdMS_TO_TICKS(1000));
 
     }
